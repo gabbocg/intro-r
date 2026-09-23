@@ -12,3 +12,7 @@ renv/staging/
 **/*.quarto_ipynb
 
 /.quarto/
+
+# Quarto jupyter-engine artefacts; the **/*.quarto_ipynb pattern above does
+# not match the numbered copies Quarto leaves behind on a crashed render.
+**/*.quarto_ipynb_*
