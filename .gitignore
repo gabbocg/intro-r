@@ -16,3 +16,11 @@ renv/staging/
 # Quarto jupyter-engine artefacts; the **/*.quarto_ipynb pattern above does
 # not match the numbered copies Quarto leaves behind on a crashed render.
 **/*.quarto_ipynb_*
+
+# Design specs and plans; working notes, not part of the deck.
+docs/superpowers/
+
+# Quarto HTML render artifacts of a single section; the deck renders from
+# index.qmd, so these are never wanted.
+**/*_files/
+sections/*.html

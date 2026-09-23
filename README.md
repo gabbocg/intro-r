@@ -1,73 +1,34 @@
-# R for Empirical Finance — Quarto Reveal.js Deck
+# R for Empirical Finance
 
-A Quarto Reveal.js deck teaching R to finance students with no prior R. Follows
-the arc of *R for Data Science 2e* but every example uses financial data —
-stock prices, returns, factor models, CAPM. Renders offline against
-committed CSVs (2015–2024 daily bars for AAPL, MSFT, SPY, TLT, GLD +
-Fama-French factors).
+An introduction to R for finance students with no prior R, built as a Quarto /
+reveal.js deck. Every example uses financial data — prices, returns, factor
+models, CAPM — and R runs in the browser, so a reader can change a number and
+re-run without installing anything.
 
-Features live-executed R chunks (webR), subtle anime.js demo animations
-(`mutate`, `filter`, `pivot_longer`, `pivot_wider`, ggplot2 deconstructed),
-and a Sandstone-inspired editorial theme.
+**[View it →](https://gabbocg.github.io/intro-r/)**
 
-## Contents
-
-`index.qmd` composes ~12 partials from `sections/`:
-
-| # | Module | R4DS analog |
-|---|--------|-------------|
-| 0 | Title + about-me | — |
-| 0c–0g | Installation, packages, projects, data structures, subsetting | Prelude |
-| 1 | Get data (`tidyquant::tq_get` → CSVs) | Import |
-| 2 | First plot (ggplot2 grammar) | Visualize |
-| 3 | Transform (`mutate`, `filter`, `group_by`) | Transform |
-| 4 | Tidy (`pivot_longer` / `pivot_wider`) | Tidy |
-| 5 | Workflow (pipes, project structure) | Workflow |
-| 6 | Dates & time series (`lubridate`, `zoo`) | — |
-| 7 | Functions (`sharpe_ratio`, `max_drawdown`) | Program |
-| 8 | Iteration (`purrr::map_dfr` over tickers) | Iteration |
-| 9 | CAPM regression (`lm`, `broom::tidy`) | Model |
-| 10 | Communicate (Quarto reports, `gt`) | Communicate |
-| 11 | Resources | — |
-
-## Bootstrap
+## Running it
 
 ```bash
-# 1. Restore R dependencies (run once, in R)
-R -e 'install.packages("renv"); renv::restore()'
-
-# 2. Render the deck
-quarto render
-
-# 3. Live preview while editing
-quarto preview
+quarto render                  # builds _site/
+quarto preview                 # live reload while editing
+bash scripts/check-render.sh   # acceptance checks, run after every change
+bash scripts/publish.sh        # render, check, deploy to GitHub Pages
 ```
 
-Output goes to `_site/index.html`.
+Deploy with `scripts/publish.sh`, not `quarto publish gh-pages` — the latter
+drops anything under `assets/vendor/` that is only referenced from inside
+JavaScript, which then 404s on the deployed site while working fine locally.
 
 ## Layout
 
-```
-index.qmd              Deck entry point
-_quarto.yml            Reveal.js format, webR filter, theme wiring
-sections/              Module partials + demo fragments
-assets/
-  theme.scss           Sandstone-inspired palette + demo styling
-  animations.js        anime.js engine + dispatch
-  js/*-anim.{js,html}  Per-demo animation modules
-  head.html            Fonts + anime.js
-  vendor/              Pinned anime.min.js
-data/                  Committed CSVs (see data/README.md)
-scripts/
-  refresh-data.R       Re-pull data from Yahoo + FF
-  check-render.sh      Post-render acceptance checks
-docs/superpowers/      Design specs + plans
-```
-
-## Verifying a build
-
-```bash
-./scripts/check-render.sh
-```
-
-Checks that all module and demo slide IDs made it into `_site/index.html`.
+| path | what |
+|---|---|
+| `index.qmd` | front matter and the section includes |
+| `sections/` | one file per topic |
+| `data/` | committed CSVs, so the deck renders offline |
+| `assets/theme.scss` | the deck's look |
+| `assets/js/*.html` | one animated demo each |
+| `assets/vendor/` | anime.js, vendored |
+| `scripts/` | the checks, the data refresh and the deploy |
+| `renv.lock` | the R library the deck was built against |
